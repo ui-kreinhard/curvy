@@ -92,3 +92,13 @@ Object.prototype.curvify = function() {
     }.bind(this));
     return ret;
 }
+
+Function.prototype.pack = function(arguments) {
+    var ret = {}
+    var paramNames = this.getParamNames()
+    for(var i=0;i<paramNames.length;i++) {
+        var paramName = paramNames[i]
+        ret[paramName] = arguments[i]
+    }
+    return ret
+}
