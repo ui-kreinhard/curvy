@@ -8,7 +8,8 @@ describe('define and usage', function () {
         whereConditions: [],
 
         entry: function (select, from) {
-            this.select = select;
+            console.log('select is ' + select)
+            this.columnsToSelect = select;
             this.from = from;
             return Object.merge(
                 this.joinPart.curvyOrdered(this),
@@ -17,6 +18,7 @@ describe('define and usage', function () {
         },
 
         joinPart: function (join, table, on) {
+            this.joins.push(arguments.pack())
             return Object.merge(
                 this.joinPart.curvyOrdered(this),
                 this.wherePart.curvyOrdered(this)
@@ -24,13 +26,12 @@ describe('define and usage', function () {
         },
 
         wherePart: function (where, operator, val) {
-            this.whereConditions.push(this.wherePart.pack(arguments))
-
+            this.whereConditions.push(arguments.pack())
         },
 
         printSql: function () {
             var s = 'select '
-            s += this.select.join(',') + ' '
+            s += this.columnsToSelect.join() + ' '
             s += 'from ' + this.from + ' ';
             s += 'where '
             s += this.whereConditions.reduce(function (previous, val) {
@@ -62,7 +63,7 @@ describe('define and usage', function () {
 
     it('should return simple select', function () {
         var s = sql.entry.curvyOrdered(sql);
-        s.select(['a', 'b', 'c']).from('myTable').where('a').operator('=').val('asdf')
+        s.select('a', 'b', 'c').from('myTable').where('a').operator('=').val('asdf')
         expect(sql.printSql())
             .toBe('select a,b,c from myTable where a=asdf ');
     })

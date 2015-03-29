@@ -16,16 +16,19 @@ Function.prototype.curvy = function curvy(context) {
     var args = this.getParamNames();
     var retObj = {};
     var resetChain = function () {
-        for (var i = 0; i < args.length; i++) {
-            var argName = args[i];
-            retObj[argName] = function (argName, argNo, argValue) {
-                settedArgs[argNo] = argValue;
+        args.forEach(function(argName) {
+            retObj[argName] = function (argName,  argValue) {
+                var argumentsArray = Array.prototype.slice.call(Array.prototype.slice.call(arguments,1, arguments.length));
+                if(argumentsArray.length > 1) {
+                    argValue = argumentsArray;
+                }
+                settedArgs.push(argValue);
+
                 retObj[argName] = function () {
                     resetChain();
                     currentArg = 0;
                     settedArgs = [];
                     throw new Error(argName + ' already set');
-
                 };
                 currentArg++;
                 if (currentArg >= args.length) {
@@ -37,8 +40,8 @@ Function.prototype.curvy = function curvy(context) {
                 } else {
                     return retObj;
                 }
-            }.fill(argName, i);
-        }
+            }.fill(argName);
+        })
     }.bind(this);
     resetChain();
     return retObj;
@@ -51,10 +54,14 @@ Function.prototype.curvyOrdered = function (context) {
     var retArray = [];
     var currentArg = 0;
     var settedArgs = []
-    for (var i = 0; i < args.length; i++) {
-        var argName = args[i];
+    args.forEach(function(argName) {
         var retObj = {};
-        retObj[argName] = function (argName, argNo, argValue) {
+        retObj[argName] = function (argName, argValue) {
+            var argumentsArray = Array.prototype.slice.call(Array.prototype.slice.call(arguments,1, arguments.length));
+            if(argumentsArray.length > 1) {
+                console.log('arg array is' + argumentsArray)
+                argValue = argumentsArray;
+            }
             settedArgs.push(argValue);
             currentArg++;
             if (currentArg >= args.length) {
@@ -65,9 +72,9 @@ Function.prototype.curvyOrdered = function (context) {
             } else {
                 return retArray[currentArg];
             }
-        }.fill(argName, i);
+        }.fill(argName);
         retArray.push(retObj);
-    }
+    });
     return retArray[0];
 }
 

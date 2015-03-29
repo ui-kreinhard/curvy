@@ -71,6 +71,12 @@ describe('curvy', function() {
             it('should pass the vars not in order', function() {
                 expect(t.curvy().b(true).a(true)).toBe(true)
             })
+            it('should pass more tan one arguments as array', function() {
+              function t2(a,b) {
+                  return a.concat(b);
+              }
+              expect(t2.curvy().a(1,2,3).b(4)).toEqual([1,2,3,4])
+            })
         });
     })
 
