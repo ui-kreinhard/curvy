@@ -93,12 +93,24 @@ Object.prototype.curvify = function() {
     return ret;
 }
 
-Function.prototype.pack = function(arguments) {
+
+Object.prototype.renameKeys = function(newKeys) {
     var ret = {}
-    var paramNames = this.getParamNames()
-    for(var i=0;i<paramNames.length;i++) {
-        var paramName = paramNames[i]
-        ret[paramName] = arguments[i]
-    }
+    var i=0
+    Object.values(this).forEach(function(value) {
+        ret[newKeys[i]] = value
+        i++;
+    })
     return ret
 }
+
+Object.prototype.pack = function() {
+    var newKeys = arguments.callee.caller.getParamNames()
+    var ret = {}
+    var i=0;
+    Object.values(this).forEach(function(value) {
+        ret[newKeys[i]] = value
+        i++
+    })
+    return ret
+};
