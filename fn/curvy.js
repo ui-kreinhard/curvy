@@ -59,7 +59,6 @@ Function.prototype.curvyOrdered = function (context) {
         retObj[argName] = function (argName, argValue) {
             var argumentsArray = Array.prototype.slice.call(Array.prototype.slice.call(arguments,1, arguments.length));
             if(argumentsArray.length > 1) {
-                console.log('arg array is' + argumentsArray)
                 argValue = argumentsArray;
             }
             settedArgs.push(argValue);
