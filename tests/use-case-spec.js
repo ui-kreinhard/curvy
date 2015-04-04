@@ -8,7 +8,6 @@ describe('define and usage', function () {
         whereConditions: [],
 
         entry: function (select, from) {
-            console.log('select is ' + select)
             this.columnsToSelect = select;
             this.from = from;
             return Object.merge(
@@ -32,12 +31,12 @@ describe('define and usage', function () {
         printSql: function () {
             var s = 'select '
             s += this.columnsToSelect.join() + ' '
-            s += 'from ' + this.from + ' ';
+            s += 'from ' + this.from + ' '
             s += 'where '
             s += this.whereConditions.reduce(function (previous, val) {
                 return val.where + val.operator + val.val + ' '
             }, '')
-            return s;
+            return s
         }
 
     }
