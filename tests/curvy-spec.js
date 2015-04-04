@@ -61,6 +61,26 @@ describe('curvy', function() {
                 expect(obj.d().a().c().b()).toBe(true);
             })
         })
+
+        it('should also work on objects', function() {
+            var obj = {
+                a: function(a1, a2) {
+                },
+                b: function(b1, b2) {
+
+                }
+            }
+            expect(obj.a.curvy).toBeDefined();
+
+            var curvy = obj.a.curvy();
+            expect(curvy.a1).toEqual(anyFn)
+            expect(curvy.a2).toEqual(anyFn)
+
+            var bCurvy = obj.b.curvy();
+            expect(bCurvy.b1).toEqual(anyFn)
+            expect(bCurvy.b2).toEqual(anyFn)
+        })
+
         describe('behaviour', function() {
             function t(a,b) {
                 return a && b;
